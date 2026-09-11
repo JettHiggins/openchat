@@ -1,0 +1,19 @@
+{
+  "name": "openchat",
+  "version": "1.0.0",
+  "description": "An app for pooled local inference with a collaborative chat.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . --trace-warnings",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jett Higgisn",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^44.2.0"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3"
+  }
+}
