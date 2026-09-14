@@ -68,16 +68,3 @@ The model server binds to laptop loopback and requires an API key. The Q verifie
 
 This version runs the complete model on one laptop. Distributed inference / pooled-compute RPC is future work; the relay does not yet split model layers between machines.
 
-## Verification
-
-`npm test` checks room synchronization, stale drafts, host authentication, cancellation, disconnect recovery, persisted history, cursor validation, and timeouts. The deployed app was also exercised with two browser clients and the real model, including shared typing, streamed answers, remote cursors, scroll synchronization, history after reload, and a 390-pixel mobile viewport.
-
-## Restore the pre-change checkpoint
-
-The original laptop code is saved in Git at `checkpoint/before-ai-hub-20260914` (`9bb07e4`). Verified laptop and Q app backups, including TravelQ, are in:
-
-```text
-/home/jerb/openchat-checkpoints/before-ai-hub-20260914/
-```
-
-Read `RESTORE.md` there before restoring. The archive is an app/source backup, not a full board image. Save any later work before replacing files.
