@@ -2,6 +2,8 @@
 
 A shared local chat room hosted by an Arduino Uno Q. Everyone connected to TravelQ can open the same conversation in a browser, see other people's cursors, share a message draft, and scroll the conversation together. Qwen3 4B runs on the host laptop.
 
+The Wi-Fi access point and upstream internet sharing are provided by [TravelQ by BCStamper](https://github.com/BCStamper/TravelQ), a separate project not authored by Openchat's author. Openchat provides the shared chat, cursors, and local model relay.
+
 ## Run it
 
 The model and Q app are already installed on this laptop and board.
@@ -67,4 +69,3 @@ flowchart LR
 The model server binds to laptop loopback and requires an API key. The Q verifies a separate host token before accepting inference output. The shared room itself is open to clients that can reach port 7000; it is intended for trusted TravelQ participants. Chat content stays on these devices. TravelQ continues handling the AP and upstream Wi-Fi.
 
 This version runs the complete model on one laptop. Distributed inference / pooled-compute RPC is future work; the relay does not yet split model layers between machines.
-
