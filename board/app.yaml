@@ -1,0 +1,6 @@
+name: openchat
+description: Shared local AI chat and cursors
+ports: []
+bricks:
+- arduino:web_ui: {}
+icon: 😀

@@ -1,24 +1,30 @@
 <!DOCTYPE html>
-<html>
-  <head>
-  <style>
-    body {background-color: black;}
-    div {color : white;}
-  </style>
-    <meta charset="UTF-8" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
-  </head>
-  <body>
-    <div id="messages"></div>
-  </body>
-  <script src="./renderer.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:; img-src 'self' data:; object-src 'none'; base-uri 'none'">
+  <link rel="icon" href="data:,">
+  <title>Openchat</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="socket.io.min.js"></script>
+  <script defer src="renderer.js"></script>
+</head>
+<body>
+  <header>
+    <div class="model-line"><span>Model: Qwen3 4B</span><span id="model-status" role="status">Waiting for laptop</span></div>
+    <div class="clients-line"><span>Connected clients:</span><span id="people" aria-label="Connected clients">None</span></div>
+    <div id="connection" role="status">Connecting to Uno Q…</div>
+  </header>
+  <main>
+    <div id="messages" tabindex="0" aria-label="Shared conversation"></div>
+    <div id="notice" role="alert"></div>
+    <form id="composer">
+      <textarea id="prompt" maxlength="2000" rows="2" placeholder="Message" aria-label="Shared message"></textarea>
+      <button id="send" type="submit">Send</button>
+      <button id="stop" type="button" hidden>Stop</button>
+    </form>
+  </main>
+  <div id="cursors" aria-hidden="true"></div>
+</body>
 </html>
