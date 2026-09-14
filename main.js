@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain} = require('electron/main')
 const path = require('node:path')
 
 const { io } = require('socket.io-client');
-const socket = io('http://localhost:7000');
+const socket = io('http://10.192.0.152:7000');
 
 
 
@@ -22,7 +22,7 @@ const createWindow = () => {
     socket.emit('cursor-update', packet)
   })
 
-  socket.on('connect', () => { 
+  socket.on('connected', () => { 
     console.log("Connected")
     win.webContents.send('connected');
   });
@@ -30,6 +30,11 @@ const createWindow = () => {
   socket.on('hello', (data) => {
     console.log("Hello")
     win.webContents.send('hello', data);
+  });
+
+  socket.on('user-cursor-packets', (packet) => {
+    console.log("User packets recieved")
+    console.log(packet)
   });
 
   win.loadFile('index.html')
