@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain} = require('electron/main')
 const path = require('node:path')
 
 const { io } = require('socket.io-client');
-const socket = io('http://10.192.0.152:7000');
+const socket = io('http://192.168.50.1:7000');
 
 
 
