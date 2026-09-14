@@ -7,8 +7,8 @@ A shared local chat room hosted by an Arduino Uno Q. Everyone connected to Trave
 The model and Q app are already installed on this laptop and board.
 
 1. Connect the laptop to **TravelQ**.
-2. In this project, run `npm run hub` and keep that terminal open. It starts Qwen3 and the model relay.
-3. Open **http://192.168.50.1:7000** in a browser, or run `npm start` for the Electron window.
+2. In this project, run `npm start`. Electron starts the local model and relay automatically on this configured laptop. Keep the app open.
+3. Use the Electron chat window. Wait for **Model ready** before sending. `npm run hub` is an optional standalone mode for hosting without Electron.
 4. Other devices join TravelQ and open the same URL. They need no model, Node.js, or Electron installation.
 
 While the laptop is on another Wi-Fi network, leave the Q connected by USB. `npm run hub` and `npm start` automatically try ADB forwarding if the TravelQ address is unavailable. On the laptop, use **http://127.0.0.1:7000** in that case; other TravelQ devices still use the Q's address. Restart `npm run hub` after switching between USB and Wi-Fi if you want the relay to use the new path. Closing the hub terminal stops inference; the room on the Q remains available.
@@ -18,7 +18,7 @@ While the laptop is on another Wi-Fi network, leave the Q connected by USB. `npm
 ## What is shared
 
 - The Q owns the ordered chat history, the current generation, presence, shared draft, and relative scroll position.
-- The first browser to join is labeled room host. If it leaves, the next browser becomes room host. In this version, the laptop running `npm run hub` supplies inference independently of that browser label; a phone becoming room host does not move the model to the phone.
+- The configured laptop supplies inference when Electron opens (or when `npm run hub` runs). Joining from another browser does not move the model to that device.
 - One reply is generated at a time, with streamed text visible to everyone. Anyone in the room can send the shared draft or stop a reply.
 - Draft updates carry a revision. Conflicting stale edits are replaced with the server's current draft; simultaneous editing is not a character-merging collaborative editor.
 - Cursors use normalized viewport coordinates and transmit up to 25 times per second. Each browser sees everyone else's cursor, with their generated name and color. Touch-only devices can chat without a continuously visible pointer.

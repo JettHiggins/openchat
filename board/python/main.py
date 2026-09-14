@@ -9,7 +9,7 @@ token_path = Path('/app/.cache/openchat-host-token')
 room = Room(web_ui.send_message, token_path.read_text().strip() if token_path.exists() else '', '/app/.cache/openchat-history.json')
 web_ui.on_disconnect(room.disconnect)
 for event in ('join', 'sync', 'worker-register', 'worker-status', 'model-chunk', 'model-done',
-              'model-error', 'cursor-update', 'draft-update', 'scroll-update', 'chat-send', 'chat-stop'):
+              'model-error', 'cursor-update', 'draft-update', 'scroll-update', 'chat-send', 'chat-stop', 'chat-clear'):
     # Keep each ordered Socket.IO event on the event loop. WebUI's generic
     # callbacks run in worker threads, which can reorder streamed text chunks.
     async def receive(sid, data, event=event):

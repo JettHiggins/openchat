@@ -12,6 +12,7 @@ let scrollTimer;
 const cursors = new Map();
 
 function controls() {
+  $('clear').disabled = !socket.connected || (!state.messages.length && !state.draft);
   $('send').disabled = !socket.connected || !state.modelReady || !!state.active || draftFlight || pendingDraft !== null || !prompt.value.trim();
   $('send').hidden = !!state.active;
   $('stop').hidden = !state.active;
@@ -47,7 +48,7 @@ function renderPeople() {
   $('people').replaceChildren();
   for (const client of state.clients) {
     const item = document.createElement('span'); item.className = 'person';
-    item.textContent = `${client.name}${client.id === socket.id ? ' (you)' : ''}${client.id === state.host ? ' · host' : ''}`;
+    item.textContent = `${client.name}${client.id === socket.id ? ' (you)' : ''}`;
     $('people').append(item);
   }
   for (const [id, cursor] of cursors) {
@@ -70,7 +71,7 @@ socket.on('room-state', next => {
   state = next; draftFlight = false;
   // An authoritative snapshot resolves concurrent edits rather than overwriting newer room text.
   pendingDraft = null; prompt.value = state.draft;
-  $('model-status').textContent = state.active ? 'Generating on laptop…' : state.modelReady ? 'Laptop ready' : 'Waiting for laptop';
+  $('model-status').textContent = state.active ? 'Generating…' : state.modelReady ? 'Model ready' : 'Model offline';
   renderPeople(); renderMessages(); controls();
 });
 socket.on('draft-state', ({ text, revision }) => {
@@ -134,6 +135,12 @@ $('composer').addEventListener('submit', event => {
   event.preventDefault(); if ($('send').disabled) return;
   $('notice').textContent = '';
   socket.emit('chat-send', { text: prompt.value, revision: state.revision });
+});
+$('clear').addEventListener('click', () => {
+  if (window.confirm('Clear the chat history and draft for everyone?')) {
+    $('notice').textContent = '';
+    socket.emit('chat-clear', {});
+  }
 });
 $('stop').addEventListener('click', () => socket.emit('chat-stop', {}));
 controls();

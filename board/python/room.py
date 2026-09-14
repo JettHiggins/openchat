@@ -125,6 +125,16 @@ class Room:
                 if isinstance(value, (int, float)) and math.isfinite(value) and 0 <= value <= 1:
                     self.scroll = value
                     self.send('scroll-state', {'value': value})
+            elif event == 'chat-clear':
+                if self.active:
+                    self.send('model-cancel', {'id': self.active['id']}, self.worker)
+                self.active = None
+                self.messages = []
+                self.draft = ''
+                self.revision += 1
+                self.scroll = 1.0
+                self.save()
+                self.publish()
             elif event == 'chat-stop' and self.active:
                 self.send('model-cancel', {'id': self.active['id']}, self.worker)
                 self.finish('stopped')

@@ -84,6 +84,25 @@ class RoomTests(unittest.TestCase):
             self.assertEqual(restored.messages[0]['content'], 'Hello')
             self.assertEqual(restored.messages[-1]['status'], 'interrupted')
 
+    def test_clear_cancels_generation_and_persists_empty_history(self):
+        with tempfile.TemporaryDirectory() as folder:
+            self.room.path = Path(folder) / 'history.json'
+            request = self.send()
+            self.room.handle('chat-clear', 'unknown', {})
+            self.assertIsNotNone(self.room.active)
+            revision = self.room.revision
+            self.room.handle('chat-clear', 'b', {})
+            self.room.handle('model-chunk', 'worker', {'id': request, 'text': 'late'})
+            self.assertEqual(self.room.messages, [])
+            self.assertEqual(self.room.draft, '')
+            self.assertGreater(self.room.revision, revision)
+            self.assertIsNone(self.room.active)
+            self.assertTrue(self.room.ready)
+            self.assertEqual(len(self.room.clients), 2)
+            self.assertIn(('model-cancel', {'id': request}, 'worker'), self.events)
+            restored = Room(lambda *args: None, 'secret', self.room.path)
+            self.assertEqual(restored.messages, [])
+
     def test_timeout_and_offline_send(self):
         self.send()
         self.room.active['touched'] -= 181
